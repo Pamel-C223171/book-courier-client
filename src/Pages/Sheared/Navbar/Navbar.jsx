@@ -7,7 +7,7 @@ const Navbar = () => {
     const links = <>
         <li><NavLink to=''>Home</NavLink></li>
         <li><NavLink to=''>Books</NavLink></li>
-        <li><NavLink to='/'>Coverage</NavLink></li>
+        <li><NavLink to='/coverage'>Coverage</NavLink></li>
         <li><NavLink to='/'>My Orders</NavLink></li>
         <li><NavLink to='/'>Dashboard</NavLink></li>
     </>
@@ -33,7 +33,7 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to='/login' className="btn">Login</Link>
+                <Link to='/login' className="btn text-secondary hover:text-primary hover:bg-secondary bg-primary">Login</Link>
             </div>
         </div>
     );
