@@ -22,14 +22,15 @@ const AddBook = () => {
     const handleAddBook = (data) => {
         // console.log('After register', data.photo[0]);
         const profileImg = data.photo[0];
-        data.username = user.displayName;
+        // data.username = user.displayName;
         const formData = new FormData();
         formData.append('image', profileImg);
         const image_API_URL = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`
         data.photoBook = image_API_URL; 
         // console.log(data);
         console.log('book photo', image_API_URL);
-        // data.librarianEmail = user.email;
+        data.librarianEmail = user.email;
+        data.createdAt = new Date();
         console.log(data);
 
 
@@ -42,13 +43,13 @@ const AddBook = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "I Agree!"
-        }).then((result) => {
+        }).then(async(result) => {
             if (result.isConfirmed) {
 
                 // axios.post('http://localhost:3000/books', data);
 
                 // save the book info to the database
-                axiosSecure.post('/books', data)
+               await axiosSecure.post('/books', data)
                     .then(res => {
                         console.log('after saving parcel', res.data);
                     })

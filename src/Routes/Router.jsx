@@ -15,6 +15,8 @@ import Payments from "../Pages/Dashboard/Payments/Payments";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
 import ManageBooks from "../Pages/Dashboard/ManageBooks/ManageBooks";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
+import AllBooks from "../Pages/Home/AllBooks/AllBooks";
+import BookDetails from "../Pages/Home/BookDetails/BookDetails";
 // import axios from "axios";
 
 export const router = createBrowserRouter([
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
             path: 'coverage',
             Component: Coverage,
             loader: () => fetch('/serviceCenter.json')
+        },
+        {
+            path: 'all-books',
+            Component: AllBooks
+        },
+        {
+            path: 'book-details/:id',
+            Component: BookDetails
         }
     ]
   },
