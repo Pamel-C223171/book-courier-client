@@ -16,6 +16,8 @@ const AddBook = () => {
         // formState: { errors } 
     } = useForm();
 
+    
+
     const axiosSecure = useAxiosSecure();
 
 
@@ -30,6 +32,7 @@ const AddBook = () => {
         // console.log(data);
         console.log('book photo', image_API_URL);
         data.librarianEmail = user.email;
+        data.librarianId = user.uid;
         data.createdAt = new Date();
         console.log(data);
 
@@ -43,7 +46,7 @@ const AddBook = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "I Agree!"
-        }).then(async(result) => {
+        }).then( async (result) => {
             if (result.isConfirmed) {
 
                 // axios.post('http://localhost:3000/books', data);

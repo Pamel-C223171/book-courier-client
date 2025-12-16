@@ -36,7 +36,7 @@ const AllUsers = () => {
 
     return (
         <div>
-            <h2>My Books: {users.length}</h2>
+            <h2>My Users: {users.length}</h2>
             <div className="overflow-x-auto">
                 <table className="table">
                     {/* head */}

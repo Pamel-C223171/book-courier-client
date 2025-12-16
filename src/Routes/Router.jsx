@@ -17,6 +17,7 @@ import ManageBooks from "../Pages/Dashboard/ManageBooks/ManageBooks";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import AllBooks from "../Pages/Home/AllBooks/AllBooks";
 import BookDetails from "../Pages/Home/BookDetails/BookDetails";
+import EditBook from "../Pages/Dashboard/MyBooks/EditBook";
 // import axios from "axios";
 
 export const router = createBrowserRouter([
@@ -39,7 +40,8 @@ export const router = createBrowserRouter([
         },
         {
             path: 'book-details/:id',
-            Component: BookDetails
+            Component: BookDetails,
+            loader: () => fetch('/serviceCenter.json')
         }
     ]
   },
@@ -64,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: 'my-books',
         Component: MyBooks
+      },
+      {
+        path: 'edit-book/:id',
+        Component: EditBook
       },
       {
         path: 'add-book',

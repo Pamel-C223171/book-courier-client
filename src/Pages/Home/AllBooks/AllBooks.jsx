@@ -39,10 +39,11 @@ const AllBooks = () => {
                 <h2 className='text-4xl font-bold text-center'>All Books: {books.length}</h2>
                 <div className='mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                     {
-                        books.map(book => <div className="card p-3 hover:scale-105 rounded-2xl shadow-xl">
+                        books.map(book => <div key={book._id} className="card p-3 hover:scale-105 rounded-2xl shadow-xl">
                             <figure className='rounded-2xl '>
                                 <img
-                                    src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                                    // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+                                    src={book.photoBook}
                                     // src={book.bookPhoto}
                                     alt="Shoes" />
                             </figure>
@@ -61,17 +62,6 @@ const AllBooks = () => {
                 </div>
 
             </div>
-
-
-
-
-
-
-
-
-
-
-
         </div>
     );
 };

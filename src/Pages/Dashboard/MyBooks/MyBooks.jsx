@@ -3,12 +3,14 @@
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router';
 
 const MyBooks = () => {
 
     const {user} = useAuth();
     const axiosSecure = useAxiosSecure();
-    const { data: books = [], refetch } = useQuery({
+    const navigate = useNavigate();
+    const { data: books = [] } = useQuery({
         queryKey: ['books', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/books`);
@@ -20,15 +22,18 @@ const MyBooks = () => {
     })
 
     const handleEditBtn = async (id) => {
-        try{
-            const status = {bookStatus: 'Unpublished'}
-            const res = await axiosSecure.patch(`/books/${id}`, status);
-            console.log('updated', res.data);
-            refetch();
-        }
-        catch(error) {
-            console.log(error);
-        }
+
+        navigate(`edit-book/${id}`)
+
+        // try{
+        //     const status = {bookStatus: 'Unpublished'}
+        //     const res = await axiosSecure.patch(`/books/${id}`, status);
+        //     console.log('updated', res.data);
+        //     refetch();
+        // }
+        // catch(error) {
+        //     console.log(error);
+        // }
     //    { myBooks.bookStatus = 'Unpublished'};
     }
 
@@ -49,7 +54,7 @@ const MyBooks = () => {
                             </tr>
                         </thead>
                         {
-                            books.map((book, i) => <tbody>
+                            books.map((book, i) => <tbody key={i}>
                             {/* row 1 */}
                             <tr>
                                 <th>{i+1}</th>
@@ -82,3 +87,19 @@ const MyBooks = () => {
 };
 
 export default MyBooks;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
