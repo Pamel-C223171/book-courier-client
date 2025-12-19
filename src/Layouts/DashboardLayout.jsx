@@ -5,8 +5,33 @@ import { IoBookSharp } from 'react-icons/io5';
 import { LuBookPlus } from 'react-icons/lu';
 import { MdInterpreterMode, MdOutlinePayment } from 'react-icons/md';
 import { Link, NavLink, Outlet } from 'react-router';
+import useAxiosSecure from '../hooks/useAxiosSecure';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../hooks/useAuth';
 
 const DashboardLayout = () => {
+
+    const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+    // const navigate = useNavigate();
+    const { data: users = {} } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users`);
+            const currentUser = res.data.filter(u => u.email === user.email);
+            // console.log('usersdbbb', res.data);
+            console.log('usersdbbb', currentUser);
+            return currentUser[0];
+            // return res.data;
+
+        }
+    })
+
+    console.log(users);
+
+
+
+
     return (
         <div className="drawer lg:drawer-open max-w-7xl mx-auto p-5">
             <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -37,67 +62,140 @@ const DashboardLayout = () => {
                             </Link>
                         </li>
 
-                        {/* admin links */}
-                         <li>
-                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="All Users" to='/dashboard/all-users'>
-                            <MdInterpreterMode />
-                             <span className="is-drawer-close:hidden">All Users</span></NavLink>
-                        </li>
-                        <li>
-                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Books" to='/dashboard/manage-books'>
-                            <FaBook />
-                             <span className="is-drawer-close:hidden">Manage Books</span></NavLink>
-                        </li>
-                        
-
-                        {/*  librarian links */}
-                        <li>
-                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Books" to='/dashboard/my-books'>
-                            <IoBookSharp />
-                             <span className="is-drawer-close:hidden">My Books</span></NavLink>
-                        </li>
-                        <li>
-                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Book" to='/dashboard/add-book'>
-                            <LuBookPlus />
-                             <span className="is-drawer-close:hidden">Add Book</span></NavLink>
-                        </li>
-                        <li>
-                            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Orders" to='/dashboard/orders'>
-                            <FaBorderAll />
-                             <span className="is-drawer-close:hidden">Orders</span></NavLink>
-                        </li>
-
                         {/* user links */}
                         <li>
                             <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Orders" to='/dashboard/my-orders'>
-                            <FaBorderAll />
-                             <span className="is-drawer-close:hidden">My Orders</span></NavLink>
+                                <FaBorderAll />
+                                <span className="is-drawer-close:hidden">My Orders</span></NavLink>
                         </li>
                         <li>
                             <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Payments" to='/dashboard/payments'>
-                            <MdOutlinePayment />
-                             <span className="is-drawer-close:hidden">Payments</span></NavLink>
+                                <MdOutlinePayment />
+                                <span className="is-drawer-close:hidden">Payments</span></NavLink>
                         </li>
                         <li>
                             <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile" to='/dashboard/my-profile'>
-                            <CgProfile />
-                             <span className="is-drawer-close:hidden">My Profile</span></NavLink>
+                                <CgProfile />
+                                <span className="is-drawer-close:hidden">My Profile</span></NavLink>
                         </li>
-                        
+                    
 
-                        {/* List item */}
-                        <li>
-                            <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                                {/* Settings icon */}
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                                <span className="is-drawer-close:hidden">Settings</span>
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+
+                    {/*  librarian links */}
+                    <li>
+                        <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Books" to='/dashboard/my-books'>
+                            <IoBookSharp />
+                            <span className="is-drawer-close:hidden">My Books</span></NavLink>
+                    </li>
+                    <li>
+                        <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Book" to='/dashboard/add-book'>
+                            <LuBookPlus />
+                            <span className="is-drawer-close:hidden">Add Book</span></NavLink>
+                    </li>
+                    <li>
+                        <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Orders" to='/dashboard/orders'>
+                            <FaBorderAll />
+                            <span className="is-drawer-close:hidden">Orders</span></NavLink>
+                    </li>
+
+
+                    {/* admin links */}
+                    <li>
+                        <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="All Users" to='/dashboard/all-users'>
+                            <MdInterpreterMode />
+                            <span className="is-drawer-close:hidden">All Users</span></NavLink>
+                    </li>
+                    <li>
+                        <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Books" to='/dashboard/manage-books'>
+                            <FaBook />
+                            <span className="is-drawer-close:hidden">Manage Books</span></NavLink>
+                    </li>
+
+
+
+                    {/* List item */}
+                    <li>
+                        <button className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
+                            {/* Settings icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+                            <span className="is-drawer-close:hidden">Settings</span>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
+        </div >
     );
 };
 
 export default DashboardLayout;
+
+
+
+
+
+
+// {
+//                             users?.role === 'user' && (
+//                                 <ul>
+//                                     {/* user links */}
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Orders" to='/dashboard/my-orders'>
+//                                             <FaBorderAll />
+//                                             <span className="is-drawer-close:hidden">My Orders</span></NavLink>
+//                                     </li>
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Payments" to='/dashboard/payments'>
+//                                             <MdOutlinePayment />
+//                                             <span className="is-drawer-close:hidden">Payments</span></NavLink>
+//                                     </li>
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile" to='/dashboard/my-profile'>
+//                                             <CgProfile />
+//                                             <span className="is-drawer-close:hidden">My Profile</span></NavLink>
+//                                     </li>
+//                                 </ul>
+//                             )
+//                         }
+
+//                         {
+//                             users?.role === 'librarian' && (
+//                                 <ul>
+//                                     {/*  librarian links */}
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Books" to='/dashboard/my-books'>
+//                                             <IoBookSharp />
+//                                             <span className="is-drawer-close:hidden">My Books</span></NavLink>
+//                                     </li>
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add Book" to='/dashboard/add-book'>
+//                                             <LuBookPlus />
+//                                             <span className="is-drawer-close:hidden">Add Book</span></NavLink>
+//                                     </li>
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Orders" to='/dashboard/orders'>
+//                                             <FaBorderAll />
+//                                             <span className="is-drawer-close:hidden">Orders</span></NavLink>
+//                                     </li>
+//                                 </ul>
+//                             )
+//                         }
+
+//                         {
+//                             users?.role === 'admin' && (
+//                                 <ul>
+//                                     {/* admin links */}
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="All Users" to='/dashboard/all-users'>
+//                                             <MdInterpreterMode />
+//                                             <span className="is-drawer-close:hidden">All Users</span></NavLink>
+//                                     </li>
+//                                     <li>
+//                                         <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Manage Books" to='/dashboard/manage-books'>
+//                                             <FaBook />
+//                                             <span className="is-drawer-close:hidden">Manage Books</span></NavLink>
+//                                     </li>
+//                                 </ul>
+//                             )
+//                         }
+

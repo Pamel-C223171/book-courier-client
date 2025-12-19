@@ -22,10 +22,10 @@ const AllBooks = () => {
     })
 
     const handleDetailsBtn = (id) => {
-        if(!user){
+        if (!user) {
             navigate('/login');
         }
-        else{
+        else {
             navigate(`/book-details/${id}`);
             console.log(id);
         }
@@ -36,28 +36,31 @@ const AllBooks = () => {
 
 
             <div className='w-11/12 mx-auto'>
-                <h2 className='text-4xl font-bold text-center'>All Books: {books.length}</h2>
+                <h2 className='text-4xl font-bold text-center'>All Books</h2>
                 <div className='mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                     {
-                        books.map(book => <div key={book._id} className="card p-3 hover:scale-105 rounded-2xl shadow-xl">
-                            <figure className='rounded-2xl '>
-                                <img
-                                    // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                                    src={book.photoBook}
-                                    // src={book.bookPhoto}
-                                    alt="Shoes" />
-                            </figure>
-                            <div className="mt-3">
-                                <h2 className="card-title font-bold hover:text-primary text-2xl justify-center">
-                                    {book.bookName}
-                                </h2>
-                                <p className='text-center my-1'>{book.authorName}</p>
-                                <p className='text-center text-xl my-3 font-bold'>Tk. {book.price}</p>
-                                <div className="card-actions justify-center">
-                                    <button onClick={() => handleDetailsBtn(book._id)} className="btn w-full bg-primary text-secondary hover:bg-secondary hover:text-primary">View More</button>
+                        books.map(book => 
+                            book.bookStatus === 'Published' && (<div key={book._id} className="card p-3 hover:scale-105 rounded-2xl shadow-xl">
+                                <figure className='rounded-2xl flex-1'>
+                                    <img
+                                        src={book.photoBook}
+                                        // src={book.bookPhoto}
+                                        alt="Shoes" />
+                                </figure>
+                                <div className="mt-3 flex-1">
+                                    <div className='flex-1'>
+                                        <h2 className="card-title font-bold hover:text-primary text-2xl justify-center">
+                                            {book.bookName}
+                                        </h2>
+                                        <p className='text-center my-1'>{book.authorName}</p>
+                                        <p className='text-center text-xl my-3 font-bold'>Tk. {book.price}</p>
+                                    </div>
+                                    <div className="card-actions justify-center flex-1">
+                                        <button onClick={() => handleDetailsBtn(book._id)} className="btn w-full bg-primary text-secondary hover:bg-secondary hover:text-primary">View More</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>)
+                            </div>)
+                        )
                     }
                 </div>
 

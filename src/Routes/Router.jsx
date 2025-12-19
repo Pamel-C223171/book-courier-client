@@ -81,7 +81,7 @@ export const router = createBrowserRouter([
         Component: MyOrders
       },
       {
-        path: 'payments',
+        path: 'payments/:id',
         Component: Payments
       },
       {

@@ -53,6 +53,7 @@ const BookDetails = () => {
         data.orderDate = new Date();
         data.bookId = book._id;
         data.customerId = user.uid;
+        data.bookName = book.bookName;
 
         console.log(data);
 

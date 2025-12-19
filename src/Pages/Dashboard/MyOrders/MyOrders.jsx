@@ -8,7 +8,6 @@ const MyOrders = () => {
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
-    // ✅ Fetch all orders for this user
     const { data: orders = [], refetch } = useQuery({
         queryKey: ['myOrders', user?.email],
         enabled: !!user?.email,
@@ -18,7 +17,6 @@ const MyOrders = () => {
         }
     });
 
-    // ✅ Fetch books to get book title
     const { data: books = [] } = useQuery({
         queryKey: ['books'],
         queryFn: async () => {
@@ -27,13 +25,11 @@ const MyOrders = () => {
         }
     });
 
-    // ✅ Merge orders with book titles
     const ordersWithBook = orders.map(order => {
         const book = books.find(b => b._id === order.bookId);
         return { ...order, bookTitle: book?.title || 'Unknown' };
     });
 
-    // ✅ Cancel order
     const handleCancelOrder = async (id) => {
         try {
             await axiosSecure.patch(`/orders/${id}`, { orderStatus: 'cancelled' });
@@ -43,12 +39,11 @@ const MyOrders = () => {
         }
     };
 
-    // ✅ Navigate to payment page
-    const handlePayNow = (id) => {
-        navigate(`/payment/${id}`);
+    const handlePayNow = async (id) => {
+        // console.log(id);
+        navigate(`/dashboard/payments/${id}`);
     };
 
-    // ✅ Status color
     const statusColor = (status) => {
         const s = status.toLowerCase();
         if (s === 'pending') return 'bg-yellow-400';
@@ -58,7 +53,6 @@ const MyOrders = () => {
         return 'bg-gray-400';
     };
 
-    // ✅ Payment status color
     const paymentColor = (status) => {
         const s = status.toLowerCase();
         if (s === 'paid') return 'bg-green-600';
