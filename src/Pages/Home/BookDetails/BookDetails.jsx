@@ -13,16 +13,17 @@ const BookDetails = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
+
     const { data: book = {}, isLoading } = useQuery({
         queryKey: ['book', id],
         queryFn: async () => {
             const res = await axiosSecure.get(`/books/${id}`);
-            console.log(res.data);
+            // console.log(res.data);
             return res.data;
         }
     });
 
-    ////////////////////////////////////////////////
+    ////////////////////////////////////////////
 
     const {
         register,
@@ -49,62 +50,39 @@ const BookDetails = () => {
         data.orderStatus = 'Pending';
         data.paymentStatus = 'Unpaid';
         data.price = book.price;
+        data.orderDate = new Date();
+        data.bookId = book._id;
+        data.customerId = user.uid;
 
         console.log(data);
 
         Swal.fire({
-            title: "Success!",
-            text: "Order has been placed",
-            icon: "success"
-        }).then(() => {
-            document.getElementById('my_modal_5').close();
+            title: "Confirm Order?",
+            text: `You will be charged ${data.price} taka!`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "I Agree!"
+        }).then( async (result) => {
+            if (result.isConfirmed) {
+
+                //save the parcel  info to the database
+                await axiosSecure.post('/orders', data)
+                    .then(res => {
+                        console.log('after saving orders', res.data);
+                    })
+
+                Swal.fire({
+                    title: "Success!",
+                    text: "Order confirmed",
+                    icon: "success"
+                }).then(() => {
+                    document.getElementById('my_modal_5').close();
+                });
+               
+            }
         });
-
-
-        // let cost = 0;
-
-        // if (isDocument) {
-        //     cost = isSameDistrict ? 60 : 80;
-        // }
-        // else {
-        //     if (parcelWeight < 3) {
-        //         cost = isSameDistrict ? 110 : 150;
-        //     }
-        //     else {
-        //         const minCharge = isSameDistrict ? 110 : 150;
-        //         const extraWeight = parcelWeight - 3;
-        //         const extraCharge = isSameDistrict ? extraWeight * 40 : extraWeight * 40 + 40;
-        //         cost = minCharge + extraCharge;
-        //     }
-        // }
-
-        // console.log(cost);
-
-        // Swal.fire({
-        //     title: "Agree with the cost?",
-        //     text: `You will be charged ${cost} taka!`,
-        //     icon: "warning",
-        //     showCancelButton: true,
-        //     confirmButtonColor: "#3085d6",
-        //     cancelButtonColor: "#d33",
-        //     confirmButtonText: "I Agree!"
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
-
-        //         //save the parcel  info to the database
-        //         axiosSecure.post('/parcels', data)
-        //             .then(res => {
-        //                 console.log('after saving parcel', res.data);
-        //             })
-
-        //         Swal.fire({
-
-        //             // title: "Deleted!",
-        //             // text: "Your file has been deleted.",
-        //             //     icon: "success"
-        //         });
-        //     }
-        // });
 
     }
     ////////////////////////////////////////
