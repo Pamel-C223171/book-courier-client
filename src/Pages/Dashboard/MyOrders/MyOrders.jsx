@@ -1,21 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 
 const MyOrders = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const { data: orders = [], refetch } = useQuery({
-        queryKey: ['myOrders', user?.email],
-        enabled: !!user?.email,
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/orders?customerEmail=${user.email}`);
-            return res.data;
-        }
-    });
+            queryKey: ['orders', user?.email],
+            queryFn: async () => {
+                const res = await axiosSecure.get(`/orders`);
+                const myOrders = res.data.filter(o => o.customerEmail === user.email);
+                return myOrders;
+    
+            }
+        })
 
     const { data: books = [] } = useQuery({
         queryKey: ['books'],
@@ -27,8 +28,10 @@ const MyOrders = () => {
 
     const ordersWithBook = orders.map(order => {
         const book = books.find(b => b._id === order.bookId);
-        return { ...order, bookTitle: book?.title || 'Unknown' };
+        return { ...order, bookName: book?.name || 'Unknown' };
     });
+
+    
 
     const handleCancelOrder = async (id) => {
         try {
@@ -39,10 +42,6 @@ const MyOrders = () => {
         }
     };
 
-    const handlePayNow = async (id) => {
-        // console.log(id);
-        navigate(`/dashboard/payments/${id}`);
-    };
 
     const statusColor = (status) => {
         const s = status.toLowerCase();
@@ -60,16 +59,35 @@ const MyOrders = () => {
         return 'bg-gray-400';
     };
 
+    const handlePayment = async (order) => {
+        const paymentInfo = {
+            price: order.price,
+            orderId: order._id,
+            customerEmail: order.customerEmail,
+            bookName: order.bookName
+        }
+        console.log(paymentInfo);
+
+        const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
+
+        console.log(res.data);
+        
+        window.location.assign(res.data.url);
+    }
+
+
     return (
-        <div>
-            <h2 className="text-xl font-bold mb-4">My Orders: {ordersWithBook.length}</h2>
+       <div>
+         <div className='w-11/12 mx-auto py-14'>
+            <h2 className="text-3xl font-bold my-8">My Orders: {ordersWithBook.length}</h2>
 
             <div className="overflow-x-auto">
                 <table className="table w-full border">
-                    <thead className="bg-gray-200">
+                    <thead className="">
                         <tr>
                             <th>No</th>
                             <th>Book Title</th>
+                            <th>Price</th>
                             <th>Order Date</th>
                             <th>Order Status</th>
                             <th>Payment Status</th>
@@ -81,7 +99,8 @@ const MyOrders = () => {
                         {ordersWithBook.map((order, i) => (
                             <tr key={order._id} className="hover:bg-gray-50">
                                 <td>{i + 1}</td>
-                                <td>{order.bookTitle}</td>
+                                <td>{order.bookName}</td>
+                                <td>{order.price}</td>
                                 <td>{new Date(order.orderDate).toLocaleDateString()}</td>
 
                                 <td>
@@ -117,7 +136,8 @@ const MyOrders = () => {
                                         order.paymentStatus &&
                                         order.paymentStatus.trim().toLowerCase() !== 'paid' && (
                                             <button
-                                                onClick={() => handlePayNow(order._id)}
+                                                // onClick={() => handlePayNow(order._id)}
+                                                onClick={() => handlePayment(order)}
                                                 className="px-2 py-1 rounded bg-green-600 text-white text-xs hover:bg-green-700"
                                             >
                                                 Pay Now
@@ -131,6 +151,7 @@ const MyOrders = () => {
                 </table>
             </div>
         </div>
+       </div>
     );
 };
 

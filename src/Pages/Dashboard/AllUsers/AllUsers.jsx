@@ -13,24 +13,24 @@ const AllUsers = () => {
     const { user } = useAuth();
 
     const axiosSecure = useAxiosSecure();
-    // const { data: users = [] } = useQuery({
+
+    // const { data: users = [], refetch } = useQuery({
     //     queryKey: ['users'],
     //     queryFn: async () => {
     //         const res = await axiosSecure.get(`/users`);
-    //         const allUsers = res.data.filter(u => u.email !== user.email);
-    //         return allUsers;
-
+    //         const currentUser = res.data.filter(u => u.email !== user.email);
+    //         return currentUser;
     //     }
     // })
 
     const { data: users = [], refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const res = await axiosSecure.get(`/users`);
-            const currentUser = res.data.filter(u => u.email !== user.email);
-            return currentUser;
-        }
-    })
+    queryKey: ['users', user?.email],
+    enabled: !!user?.email,   // 🔥 VERY IMPORTANT
+    queryFn: async () => {
+        const res = await axiosSecure.get('/users');
+        return res.data.filter(u => u.email !== user.email);
+    }
+});
 
     const handleToggleAdmin = async (user) => {
         const roleInfo = {role: 'admin'};
@@ -91,8 +91,9 @@ const AllUsers = () => {
 
 
     return (
-        <div>
-            <h2>My Users: {users.length}</h2>
+       <div>
+         <div className='w-11/12 mx-auto py-14'>
+            <h2 className='text-3xl font-bold my-8'>All Users: {users.length}</h2>
             <div className="overflow-x-auto">
                 <table className="table">
                     {/* head */}
@@ -142,6 +143,7 @@ const AllUsers = () => {
                 </table>
             </div>
         </div>
+       </div>
     );
 };
 

@@ -46,14 +46,15 @@ const ManageBooks = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Manage Books: {books.length}</h2>
+   <div>
+     <div className='w-11/12 mx-auto py-14'>
+      <h2 className="text-3xl font-bold my-8">Manage Books: {books.length}</h2>
 
       {loading && <p className="text-sm text-gray-500 mb-2">Processing...</p>}
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
-          <thead className="bg-gray-200">
+          <thead className="">
             <tr>
               <th>No</th>
               <th>Title</th>
@@ -66,7 +67,7 @@ const ManageBooks = () => {
 
           <tbody>
             {books.map((book, i) => (
-              <tr key={book._id} className="hover:bg-gray-50">
+              <tr key={book._id} className="hover:bg-blue-400">
                 <td>{i + 1}</td>
                 <td>{book.bookName}</td>
                 <td>{book.authorName}</td>
@@ -107,6 +108,7 @@ const ManageBooks = () => {
         </table>
       </div>
     </div>
+   </div>
   );
 };
 

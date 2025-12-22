@@ -1,10 +1,10 @@
 import React from 'react';
+import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import useAuth from '../../../hooks/useAuth';
-import { Link, useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 
-const AllBooks = () => {
+const LatestBooks = () => {
 
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
@@ -12,16 +12,15 @@ const AllBooks = () => {
     const { data: books = [] } = useQuery({
         queryKey: ['books'],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/books`);
+            const res = await axiosSecure.get(`/latest-books`);
             // const myBooks = res.data.filter(b => b.librarianEmail === user.email);
             // console.log(myBooks);
             // return myBooks;
             return res.data;
-
         }
     })
 
-    const handleDetailsBtn = (id) => {
+     const handleDetailsBtn = (id) => {
         if (!user) {
             navigate('/login');
         }
@@ -33,10 +32,8 @@ const AllBooks = () => {
 
     return (
         <div>
-
-
-            <div className='w-11/12 mx-auto py-14'>
-                <h2 className='text-3xl font-bold my-10'>All Books:  {books.length}</h2>
+            <div className='mt-14 w-11/12 mx-auto'>
+                <h2 className='text-4xl font-bold'>Latest Jobs</h2>
                 <div className='mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
                     {
                         books.map(book => 
@@ -64,9 +61,12 @@ const AllBooks = () => {
                     }
                 </div>
 
+                <div className=' mt-10 flex justify-center'>
+                    <NavLink to='/all-books'><button className='btn bg-primary hover:bg-secondary text-secondary hover:text-primary'>View All Books</button></NavLink>
+                </div>
             </div>
         </div>
     );
 };
 
-export default AllBooks;
+export default LatestBooks; <h2>latest books</h2>

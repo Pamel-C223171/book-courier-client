@@ -94,9 +94,9 @@ const EditBook = () => {
                 onSubmit={handleSubmit(handleUpdate)}>
                 {/* add book form */}
                 <div className='grid grid-cols-1'>
-                    {/* sender */}
+                   
                     <fieldset className="fieldset">
-                        <h2 className='text-5xl font-bold text-center my-8'>Update Book {book.authorName}</h2>
+                        <h2 className='text-5xl font-bold text-center my-8'>Update Book</h2>
 
                         {/* Book name */}
                         <label className="label">Book Name</label>

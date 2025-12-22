@@ -6,19 +6,27 @@ const Orders = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  // ✅ Fetch only this librarian's orders
+  // const { data: orders = [], refetch } = useQuery({
+  //   queryKey: ['orders', user?.email],
+  //   enabled: !!user?.email,
+  //   queryFn: async () => {
+  //     const res = await axiosSecure.get(
+  //       `/orders?librarianEmail=${user.email}`
+  //     );
+  //     return res.data;
+  //   }
+  // });
+
   const { data: orders = [], refetch } = useQuery({
     queryKey: ['orders', user?.email],
-    enabled: !!user?.email,
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/orders?librarianEmail=${user.email}`
-      );
-      return res.data;
-    }
-  });
+      const res = await axiosSecure.get(`/orders`);
+      const myOrders = res.data.filter(o => o.librarianEmail === user.email);
+      return myOrders;
 
-  // ✅ Status change logic
+    }
+  })
+
   const handleStatusChange = async (id, currentStatus) => {
     const status = currentStatus.toLowerCase();
     let nextStatus = '';
@@ -38,7 +46,6 @@ const Orders = () => {
     }
   };
 
-  // ❌ Cancel order
   const handleCancelOrder = async (id) => {
     try {
       await axiosSecure.patch(`/orders/${id}`, {
@@ -50,7 +57,7 @@ const Orders = () => {
     }
   };
 
-  // ✅ Status color function
+
   const statusColor = (status) => {
     const s = status.toLowerCase();
     if (s === 'pending') return 'bg-yellow-400';
@@ -60,9 +67,17 @@ const Orders = () => {
     return 'bg-gray-400';
   };
 
+  const paymentColor = (status) => {
+    const s = status.toLowerCase();
+    if (s === 'paid') return 'bg-green-600';
+    if (s === 'unpaid') return 'bg-red-500';
+    return 'bg-gray-400';
+  };
+
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">
+   <div>
+     <div className='w-11/12 mx-auto py-14'>
+      <h2 className="text-3xl font-bold my-8">
         Orders: {orders.length}
       </h2>
 
@@ -71,6 +86,7 @@ const Orders = () => {
           <thead>
             <tr>
               <th>No</th>
+              <th>Book Name</th>
               <th>Customer</th>
               <th>Order Status</th>
               <th>Payment</th>
@@ -82,6 +98,7 @@ const Orders = () => {
             {orders.map((order, i) => (
               <tr key={order._id}>
                 <td>{i + 1}</td>
+                <td>{order.bookName}</td>
 
                 <td>
                   <div className="font-bold">{order.customerName}</div>
@@ -101,7 +118,9 @@ const Orders = () => {
                 </td>
 
                 <td>
-                  <span className="px-2 py-1 rounded bg-gray-200">
+                  <span
+                    className={`text-white px-2 py-1 rounded ${paymentColor(order.paymentStatus)}`}
+                  >
                     {order.paymentStatus}
                   </span>
                 </td>
@@ -137,6 +156,7 @@ const Orders = () => {
         </table>
       </div>
     </div>
+   </div>
   );
 };
 

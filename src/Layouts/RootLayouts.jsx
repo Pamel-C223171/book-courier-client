@@ -5,7 +5,7 @@ import Navbar from '../Pages/Sheared/Navbar/Navbar';
 
 const RootLayouts = () => {
     return (
-        <div className='max-w-7xl mx-auto'>
+        <div className='max-w-7xl mx-auto space-y-14'>
             <Navbar></Navbar>
             <Outlet></Outlet>
             <Footer></Footer>

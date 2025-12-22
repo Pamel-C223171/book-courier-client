@@ -13,11 +13,17 @@ import Orders from "../Pages/Dashboard/Orders/Orders";
 import MyOrders from "../Pages/Dashboard/MyOrders/MyOrders";
 import Payments from "../Pages/Dashboard/Payments/Payments";
 import AllUsers from "../Pages/Dashboard/AllUsers/AllUsers";
-import ManageBooks from "../Pages/Dashboard/ManageBooks/ManageBooks";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import AllBooks from "../Pages/Home/AllBooks/AllBooks";
 import BookDetails from "../Pages/Home/BookDetails/BookDetails";
 import EditBook from "../Pages/Dashboard/MyBooks/EditBook";
+import AdminRoute from "./AdminRoute";
+import LibrarianRoute from "./LibrarianRoute";
+import UserRoute from "./UserRoute";
+import ManageBooks from "../Pages/Dashboard/ManageBooks/ManageBooks";
+import PaymentSuccess from "../Pages/Dashboard/Payments/PaymentSuccess";
+import PaymentCancelled from "../Pages/Dashboard/Payments/PaymentCancelled";
+import Error from "../Pages/Error/Error";
 // import axios from "axios";
 
 export const router = createBrowserRouter([
@@ -25,38 +31,38 @@ export const router = createBrowserRouter([
     path: "/",
     Component: RootLayouts,
     children: [
-        {
-            index: true,
-            Component: Home
-        },
-        {
-            path: 'coverage',
-            Component: Coverage,
-            loader: () => fetch('/serviceCenter.json')
-        },
-        {
-            path: 'all-books',
-            Component: AllBooks
-        },
-        {
-            path: 'book-details/:id',
-            Component: BookDetails,
-            loader: () => fetch('/serviceCenter.json')
-        }
+      {
+        index: true,
+        Component: Home
+      },
+      {
+        path: 'coverage',
+        Component: Coverage,
+        loader: () => fetch('/serviceCenter.json')
+      },
+      {
+        path: 'all-books',
+        Component: AllBooks
+      },
+      {
+        path: 'book-details/:id',
+        Component: BookDetails,
+        loader: () => fetch('/serviceCenter.json')
+      }
     ]
   },
   {
     path: '/',
     Component: AuthLayout,
     children: [
-        {
-            path: 'login',
-            Component: Login
-        },
-        {
-            path: 'register',
-            Component: Register
-        },
+      {
+        path: 'login',
+        Component: Login
+      },
+      {
+        path: 'register',
+        Component: Register
+      },
     ]
   },
   {
@@ -65,42 +71,58 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'my-books',
-        Component: MyBooks
+        element: <LibrarianRoute><MyBooks></MyBooks></LibrarianRoute>
       },
       {
         path: 'edit-book/:id',
-        Component: EditBook
+        element: <LibrarianRoute><EditBook></EditBook></LibrarianRoute>
       },
       {
         path: 'add-book',
-        Component: AddBook,
+        element: <LibrarianRoute><AddBook></AddBook></LibrarianRoute>,
         loader: () => fetch('/serviceCenter.json')
       },
       {
         path: 'my-orders',
-        Component: MyOrders
+        element: <UserRoute><MyOrders></MyOrders></UserRoute>
       },
       {
-        path: 'payments/:id',
-        Component: Payments
+        path: 'payments',
+        element: <UserRoute><Payments></Payments></UserRoute>
+      },
+      {
+        path: 'payment-success',
+        element: <UserRoute><PaymentSuccess></PaymentSuccess></UserRoute>
+      },
+      {
+        path: 'payment-cancelled',
+        element: <UserRoute><PaymentCancelled></PaymentCancelled></UserRoute>
       },
       {
         path: 'orders',
-        Component: Orders
+        element: <LibrarianRoute><Orders></Orders></LibrarianRoute>
       },
       {
         path: 'all-users',
-        Component: AllUsers
+        element: <AdminRoute><AllUsers></AllUsers></AdminRoute>
         // loader: () => axios.get('http://localhost:3000/users')
       },
       {
         path: 'manage-books',
-        Component: ManageBooks
+        element: <AdminRoute><ManageBooks></ManageBooks></AdminRoute>
       },
       {
         path: 'my-profile',
-        Component: MyProfile
+        element: <UserRoute><MyProfile></MyProfile></UserRoute>
+      },
+      {
+        path: 'profile',
+        element: <AdminRoute><MyProfile></MyProfile></AdminRoute>
       },
     ]
-  }
+  },
+  {
+    path: '*',
+    Component: Error
+  },
 ]);

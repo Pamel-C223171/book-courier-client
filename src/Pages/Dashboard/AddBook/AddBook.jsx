@@ -12,6 +12,7 @@ const AddBook = () => {
     const {
         register,
         handleSubmit,
+        handleReset
         // control,
         // formState: { errors } 
     } = useForm();
@@ -40,7 +41,7 @@ const AddBook = () => {
 
         Swal.fire({
             title: "Add to the Book?",
-            text: `You will be charged taka!`,
+            // text: `You will be charged taka!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -63,6 +64,8 @@ const AddBook = () => {
                     text: "Your book has been added.",
                     icon: "success"
                 });
+                handleReset(); // useForm থেকে
+
             }
         });
 

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 const MyBooks = () => {
 
     const {user} = useAuth();
-    const axiosSecure = useAxiosSecure();
+    const axiosSecure = useAxiosSecure(); 
     const navigate = useNavigate();
     const { data: books = [] } = useQuery({
         queryKey: ['books', user?.email],
@@ -23,25 +23,16 @@ const MyBooks = () => {
 
     const handleEditBtn = async (id) => {
 
-        navigate(`edit-book/${id}`)
+        navigate(`/dashboard/edit-book/${id}`)
 
-        // try{
-        //     const status = {bookStatus: 'Unpublished'}
-        //     const res = await axiosSecure.patch(`/books/${id}`, status);
-        //     console.log('updated', res.data);
-        //     refetch();
-        // }
-        // catch(error) {
-        //     console.log(error);
-        // }
-    //    { myBooks.bookStatus = 'Unpublished'};
     }
 
 
 
     return (
         <div>
-            <h2>My Books: {books.length}</h2>
+            <div className='w-11/12 mx-auto py-14'>
+            <h2 className='text-3xl font-bold my-8'>My Books: {books.length}</h2>
             <div className="overflow-x-auto">
                     <table className="table">
                         {/* head */}
@@ -82,6 +73,7 @@ const MyBooks = () => {
                         }
                     </table>
                 </div>
+        </div>
         </div>
     );
 };

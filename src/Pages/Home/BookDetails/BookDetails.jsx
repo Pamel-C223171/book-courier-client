@@ -54,6 +54,7 @@ const BookDetails = () => {
         data.bookId = book._id;
         data.customerId = user.uid;
         data.bookName = book.bookName;
+        data.librarianEmail = book.librarianEmail;
 
         console.log(data);
 

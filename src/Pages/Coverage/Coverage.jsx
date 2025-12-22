@@ -25,7 +25,7 @@ const Coverage = () => {
     }
 
     return (
-        <div className='bg-white px-24 py-20 rounded-3xl'>
+        <div className='px-24 py-20 rounded-3xl'>
             <div>
                 <h2 className='text-5xl font-bold mb-8'>We are available in 64 districts</h2>
 
