@@ -3,6 +3,7 @@ import facebookimg from '../../../../src/assets/facebook.png'
 import instagramimg from '../../../../src/assets/instagram.png'
 import twitterimg from '../../../../src/assets/twitter.png'
 import linkedinimg from '../../../../src/assets/linkedin.png'
+import Logo from '../../../Components/Logo/Logo';
 
 const Footer = () => {
     return (
@@ -10,9 +11,8 @@ const Footer = () => {
             <div className=' text-white w-11/12 mx-auto py-10 '>
                 <div className='grid grid-cols-1 md:grid-cols-4 md:justify-items-center text-[#A1A1AA] border-b-1 border-b-gray-600 pb-7 gap-5'>
                     <div>
-                        <div className='flex flex-col mb-5'>
-                           
-                            <a className="font-bold text-2xl mb-3">Book Courier</a>
+                        <Logo></Logo>
+                        <div className='flex flex-col my-5'>
                             <p className='text-xs'>Fast and reliable book delivery, connecting readers with their favorite books.</p>
 
                         </div>
